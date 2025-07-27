@@ -4,199 +4,172 @@ Thank you for your interest in contributing to FitTrackAI! This document provide
 
 ## 🤝 How to Contribute
 
-### Reporting Issues
+### **Reporting Issues**
 - Use the GitHub issue tracker
-- Provide detailed descriptions of the problem
+- Provide clear, detailed descriptions
 - Include steps to reproduce the issue
 - Mention your operating system and Python version
 
-### Suggesting Features
-- Open a feature request issue
-- Describe the feature and its benefits
-- Provide use cases and examples
-- Consider implementation complexity
+### **Feature Requests**
+- Describe the feature you'd like to see
+- Explain why it would be useful
+- Provide examples of how it would work
 
-### Code Contributions
+### **Code Contributions**
 1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/amazing-feature`)
+2. Create a feature branch: `git checkout -b feature/amazing-feature`
 3. Make your changes
-4. Add tests if applicable
-5. Commit your changes (`git commit -m 'Add amazing feature'`)
-6. Push to the branch (`git push origin feature/amazing-feature`)
+4. Test thoroughly
+5. Commit your changes: `git commit -m 'Add amazing feature'`
+6. Push to the branch: `git push origin feature/amazing-feature`
 7. Open a Pull Request
 
 ## 🛠️ Development Setup
 
-### Prerequisites
+### **Prerequisites**
 - Python 3.8+
-- pip package manager
+- Ollama installed and running
 - Git
 
-### Local Development
-1. Clone the repository
-   ```bash
-   git clone https://github.com/yourusername/FitTrackAI.git
-   cd FitTrackAI
-   ```
+### **Local Development**
+```bash
+# Clone the repository
+git clone https://github.com/yourusername/FitTrackAI.git
+cd FitTrackAI
 
-2. Create a virtual environment
-   ```bash
-   python -m venv venv
-   source venv/bin/activate  # On Windows: venv\Scripts\activate
-   ```
+# Install dependencies
+pip install -r requirements.txt
 
-3. Install dependencies
-   ```bash
-   pip install -r requirements.txt
-   ```
+# Setup Ollama
+python setup_ollama.py
 
-4. Run the application
-   ```bash
-   python app.py
-   ```
+# Run the application
+python start_app.py
+```
 
 ## 📋 Code Style Guidelines
 
-### Python
+### **Python**
 - Follow PEP 8 style guidelines
 - Use meaningful variable and function names
 - Add docstrings to functions and classes
 - Keep functions focused and concise
 
-### JavaScript
-- Use consistent indentation (2 spaces)
-- Follow ES6+ conventions
-- Add comments for complex logic
-- Use meaningful variable names
-
-### HTML/CSS
-- Use semantic HTML elements
-- Follow BEM naming convention for CSS
+### **JavaScript/HTML/CSS**
+- Use consistent indentation
+- Follow modern ES6+ practices
+- Use semantic HTML
 - Keep CSS organized and commented
-- Ensure responsive design
 
 ## 🧪 Testing
 
-### Running Tests
+### **Running Tests**
 ```bash
-python -m pytest tests/
+# Run all tests
+python -m pytest
+
+# Run with coverage
+python -m pytest --cov=app tests/
 ```
 
-### Writing Tests
-- Create test files in the `tests/` directory
+### **Test Guidelines**
+- Write tests for new features
+- Ensure existing tests pass
+- Test edge cases and error conditions
 - Use descriptive test names
-- Test both success and error cases
-- Mock external dependencies
 
 ## 📝 Documentation
 
-### Code Documentation
-- Add docstrings to all functions and classes
+### **Code Documentation**
+- Add docstrings to all functions
 - Include type hints where appropriate
-- Document complex algorithms
+- Comment complex logic
 - Update README.md for new features
 
-### API Documentation
-- Document all API endpoints
+### **API Documentation**
+- Document new API endpoints
 - Include request/response examples
-- Specify data types and formats
-- Add error handling information
+- Update API.md for changes
 
-## 🔧 Project Structure
+## 🔒 Security
 
-```
-FitTrackAI/
-├── app.py                 # Main Flask application
-├── requirements.txt       # Python dependencies
-├── templates/            # HTML templates
-│   └── index.html       # Main chat interface
-├── data/                # Data directory
-│   └── db/             # Database files
-├── tests/               # Test files
-├── docs/                # Documentation
-├── README.md            # Project documentation
-├── CONTRIBUTING.md      # This file
-├── LICENSE              # MIT License
-└── .gitignore           # Git ignore rules
-```
+### **Security Guidelines**
+- Never commit sensitive data
+- Use environment variables for secrets
+- Validate all user inputs
+- Follow secure coding practices
 
-## 🎯 Areas for Contribution
+## 🚀 Release Process
 
-### High Priority
-- [ ] Add unit tests for core functionality
-- [ ] Implement real LLM integration (Ollama, HuggingFace)
-- [ ] Add data export functionality
-- [ ] Improve error handling and user feedback
+### **Versioning**
+- Use semantic versioning (MAJOR.MINOR.PATCH)
+- Update version in app.py
+- Create release notes
 
-### Medium Priority
-- [ ] Add more visualization types
-- [ ] Implement user authentication
-- [ ] Add goal setting and tracking
-- [ ] Create mobile-responsive improvements
+### **Release Checklist**
+- [ ] All tests pass
+- [ ] Documentation updated
+- [ ] Version bumped
+- [ ] Release notes written
+- [ ] Ollama compatibility verified
 
-### Low Priority
-- [ ] Add social sharing features
-- [ ] Implement data backup/restore
-- [ ] Add multi-language support
-- [ ] Create admin dashboard
+## 🤖 AI/LLM Contributions
 
-## 🐛 Bug Reports
+### **Ollama Integration**
+- Test with different models
+- Verify prompt engineering
+- Ensure error handling
+- Test performance
 
-When reporting bugs, please include:
+### **Data Processing**
+- Validate data integrity
+- Handle edge cases
+- Optimize performance
+- Add data validation
 
-1. **Environment Information**
-   - Operating system and version
-   - Python version
-   - Browser (if applicable)
-   - Package versions
+## 📊 Data Privacy
 
-2. **Bug Description**
-   - Clear description of the issue
-   - Steps to reproduce
-   - Expected vs actual behavior
-   - Screenshots (if applicable)
+### **Privacy Guidelines**
+- All data stays local
+- No external API calls for user data
+- Clear data handling policies
+- User consent for data processing
 
-3. **Additional Context**
-   - When did the issue start?
-   - Does it happen consistently?
-   - Any recent changes that might have caused it?
+## 🎯 Project Goals
 
-## 💡 Feature Requests
+### **Core Principles**
+- Privacy-first approach
+- Local deployment only
+- Free and open source
+- User-friendly interface
+- Real AI capabilities
 
-When suggesting features:
-
-1. **Feature Description**
-   - Clear explanation of the feature
-   - Use cases and benefits
-   - How it fits into the project
-
-2. **Implementation Ideas**
-   - Suggested approach
-   - Technical considerations
-   - Potential challenges
-
-3. **Priority Level**
-   - High/Medium/Low priority
-   - Impact on users
-   - Development effort required
+### **Future Roadmap**
+- Enhanced data visualization
+- More health metrics support
+- Improved AI responses
+- Better user experience
 
 ## 📞 Getting Help
 
-- **GitHub Issues**: For bugs and feature requests
-- **Discussions**: For general questions and ideas
-- **Documentation**: Check README.md and inline docs
+### **Support Channels**
+- GitHub Issues
+- GitHub Discussions
+- Documentation
+- Code comments
 
-## 🏆 Recognition
+### **Community Guidelines**
+- Be respectful and inclusive
+- Help others learn
+- Share knowledge
+- Follow the code of conduct
+
+## 🙏 Recognition
 
 Contributors will be recognized in:
 - README.md contributors section
 - Release notes
+- GitHub contributors page
 - Project documentation
 
-## 📄 License
-
-By contributing to FitTrackAI, you agree that your contributions will be licensed under the MIT License.
-
----
-
-Thank you for contributing to FitTrackAI! 🎉 
+Thank you for contributing to FitTrackAI! 🚀 

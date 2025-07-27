@@ -99,132 +99,100 @@
             color: white;
         }
         
-        .chat-input {
-            padding: 20px;
-            background: white;
-            border-radius: 0 0 20px 20px;
-            border-top: 1px solid #e9ecef;
-        }
-        
-        .input-group {
+        .llm-status {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 10px 15px;
             border-radius: 25px;
-            overflow: hidden;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            font-size: 12px;
+            z-index: 1000;
         }
         
-        .form-control {
-            border: none;
-            padding: 15px 20px;
-            font-size: 16px;
+        .llm-provider {
+            font-weight: bold;
+            color: #667eea;
         }
         
-        .form-control:focus {
-            box-shadow: none;
-            border: none;
+        .llm-available {
+            color: #28a745;
         }
         
-        .btn-send {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            border: none;
-            color: white;
-            padding: 15px 25px;
-            font-size: 16px;
-            transition: all 0.3s ease;
-        }
-        
-        .btn-send:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
-        }
-        
-        .plot-container {
-            background: white;
-            border-radius: 15px;
-            padding: 20px;
-            margin: 20px 0;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        .llm-unavailable {
+            color: #dc3545;
         }
         
         .quick-actions {
             display: flex;
-            gap: 8px;
-            flex-wrap: wrap;
+            gap: 10px;
             margin-bottom: 15px;
-            justify-content: center;
+            flex-wrap: wrap;
         }
         
-        .quick-btn {
-            background: #f8f9fa;
-            border: 1px solid #dee2e6;
+        .quick-action-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 8px 16px;
             border-radius: 20px;
-            padding: 8px 12px;
             font-size: 12px;
             cursor: pointer;
             transition: all 0.3s ease;
-            white-space: nowrap;
         }
         
-        .quick-btn:hover {
-            background: #667eea;
-            color: white;
-            border-color: #667eea;
+        .quick-action-btn:hover {
             transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
         }
         
-        .quick-btn.analysis {
-            background: #e3f2fd;
-            border-color: #2196f3;
-            color: #1976d2;
+        .data-summary {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 15px;
+            border-left: 4px solid #667eea;
         }
         
-        .quick-btn.analysis:hover {
-            background: #2196f3;
-            color: white;
+        .data-summary h6 {
+            margin: 0 0 10px 0;
+            color: #667eea;
+            font-weight: bold;
         }
         
-        .quick-btn.plot {
-            background: #f3e5f5;
-            border-color: #9c27b0;
-            color: #7b1fa2;
-        }
-        
-        .quick-btn.plot:hover {
-            background: #9c27b0;
-            color: white;
-        }
-        
-        .quick-btn.custom {
-            background: #e8f5e8;
-            border-color: #4caf50;
-            color: #388e3c;
-        }
-        
-        .quick-btn.custom:hover {
-            background: #4caf50;
-            color: white;
+        .data-summary p {
+            margin: 5px 0;
+            font-size: 14px;
         }
         
         .typing-indicator {
             display: none;
             padding: 10px;
-            color: #6c757d;
-            font-style: italic;
+            background: #f8f9fa;
+            border-radius: 10px;
+            margin: 10px 0;
         }
         
         .typing-dots {
-            display: inline-block;
+            display: flex;
+            gap: 4px;
         }
         
-        .typing-dots::after {
-            content: '';
-            animation: typing 1.5s infinite;
+        .typing-dot {
+            width: 8px;
+            height: 8px;
+            background: #667eea;
+            border-radius: 50%;
+            animation: typing 1.4s infinite ease-in-out;
         }
+        
+        .typing-dot:nth-child(1) { animation-delay: -0.32s; }
+        .typing-dot:nth-child(2) { animation-delay: -0.16s; }
         
         @keyframes typing {
-            0%, 20% { content: ''; }
-            40% { content: '.'; }
-            60% { content: '..'; }
-            80%, 100% { content: '...'; }
+            0%, 80%, 100% { transform: scale(0.8); opacity: 0.5; }
+            40% { transform: scale(1); opacity: 1; }
         }
         
         .welcome-message {
@@ -253,6 +221,12 @@
 </head>
 <body>
     <div class="main-container">
+        <!-- LLM Status Indicator -->
+        <div class="llm-status" id="llmStatus">
+            <i class="fas fa-robot"></i>
+            <span id="llmProvider">Loading...</span>
+        </div>
+        
         <div class="chat-container">
             <!-- Header -->
             <div class="chat-header">
@@ -262,6 +236,12 @@
             
             <!-- Messages Area -->
             <div class="chat-messages" id="chatMessages">
+                <!-- Data Summary Section -->
+                <div class="data-summary" id="dataSummary">
+                    <h6><i class="fas fa-database me-2"></i>Your Health Data Overview</h6>
+                    <p><i class="fas fa-calendar me-2"></i>Loading data summary...</p>
+                </div>
+                
                 <!-- Welcome Message -->
                 <div class="welcome-message">
                     <h5><i class="fas fa-robot me-2"></i>Welcome to FitTrackAI!</h5>
@@ -271,22 +251,22 @@
                     <div class="action-categories">
                         <div class="category-title">📊 Quick Plots</div>
                         <div class="quick-actions">
-                            <button class="quick-btn plot" onclick="sendQuickMessage('Show me my step data')">
+                            <button class="quick-action-btn" onclick="sendQuickMessage('Show me my step data')">
                                 <i class="fas fa-walking me-1"></i>Steps
                             </button>
-                            <button class="quick-btn plot" onclick="sendQuickMessage('Show me my sleep data')">
+                            <button class="quick-action-btn" onclick="sendQuickMessage('Show me my sleep data')">
                                 <i class="fas fa-bed me-1"></i>Sleep
                             </button>
-                            <button class="quick-btn plot" onclick="sendQuickMessage('Show me my calorie data')">
+                            <button class="quick-action-btn" onclick="sendQuickMessage('Show me my calorie data')">
                                 <i class="fas fa-fire me-1"></i>Calories
                             </button>
-                            <button class="quick-btn plot" onclick="sendQuickMessage('Show me my distance data')">
+                            <button class="quick-action-btn" onclick="sendQuickMessage('Show me my distance data')">
                                 <i class="fas fa-route me-1"></i>Distance
                             </button>
-                            <button class="quick-btn plot" onclick="sendQuickMessage('Show me my flights data')">
+                            <button class="quick-action-btn" onclick="sendQuickMessage('Show me my flights data')">
                                 <i class="fas fa-building me-1"></i>Flights
                             </button>
-                            <button class="quick-btn plot" onclick="sendQuickMessage('Show me my walking metrics')">
+                            <button class="quick-action-btn" onclick="sendQuickMessage('Show me my walking metrics')">
                                 <i class="fas fa-tachometer-alt me-1"></i>Walking
                             </button>
                         </div>
@@ -296,19 +276,19 @@
                     <div class="action-categories">
                         <div class="category-title">📈 Data Analysis</div>
                         <div class="quick-actions">
-                            <button class="quick-btn analysis" onclick="sendQuickMessage('Analyze my step trends')">
+                            <button class="quick-action-btn" onclick="sendQuickMessage('Analyze my step trends')">
                                 <i class="fas fa-chart-line me-1"></i>Step Analysis
                             </button>
-                            <button class="quick-btn analysis" onclick="sendQuickMessage('Analyze my sleep patterns')">
+                            <button class="quick-action-btn" onclick="sendQuickMessage('Analyze my sleep patterns')">
                                 <i class="fas fa-moon me-1"></i>Sleep Analysis
                             </button>
-                            <button class="quick-btn analysis" onclick="sendQuickMessage('Analyze my calorie burn')">
+                            <button class="quick-action-btn" onclick="sendQuickMessage('Analyze my calorie burn')">
                                 <i class="fas fa-burn me-1"></i>Calorie Analysis
                             </button>
-                            <button class="quick-btn analysis" onclick="sendQuickMessage('Analyze my distance trends')">
+                            <button class="quick-action-btn" onclick="sendQuickMessage('Analyze my distance trends')">
                                 <i class="fas fa-road me-1"></i>Distance Analysis
                             </button>
-                            <button class="quick-btn analysis" onclick="sendQuickMessage('Show me general health trends')">
+                            <button class="quick-action-btn" onclick="sendQuickMessage('Show me general health trends')">
                                 <i class="fas fa-chart-bar me-1"></i>General Trends
                             </button>
                         </div>
@@ -318,16 +298,16 @@
                     <div class="action-categories">
                         <div class="category-title">🔍 Custom & Info</div>
                         <div class="quick-actions">
-                            <button class="quick-btn custom" onclick="sendQuickMessage('Give me a summary of my data')">
+                            <button class="quick-action-btn" onclick="sendQuickMessage('Give me a summary of my data')">
                                 <i class="fas fa-info-circle me-1"></i>Data Summary
                             </button>
-                            <button class="quick-btn custom" onclick="sendQuickMessage('Show me walking speed data')">
+                            <button class="quick-action-btn" onclick="sendQuickMessage('Show me walking speed data')">
                                 <i class="fas fa-running me-1"></i>Walking Speed
                             </button>
-                            <button class="quick-btn custom" onclick="sendQuickMessage('Show me walking steadiness')">
+                            <button class="quick-action-btn" onclick="sendQuickMessage('Show me walking steadiness')">
                                 <i class="fas fa-balance-scale me-1"></i>Steadiness
                             </button>
-                            <button class="quick-btn custom" onclick="sendQuickMessage('What can you help me with?')">
+                            <button class="quick-action-btn" onclick="sendQuickMessage('What can you help me with?')">
                                 <i class="fas fa-question-circle me-1"></i>Help
                             </button>
                         </div>
@@ -337,7 +317,11 @@
             
             <!-- Typing Indicator -->
             <div class="typing-indicator" id="typingIndicator">
-                <i class="fas fa-robot me-2"></i>AI is thinking<span class="typing-dots"></span>
+                <i class="fas fa-robot me-2"></i>AI is thinking<span class="typing-dots">
+                    <span class="typing-dot"></span>
+                    <span class="typing-dot"></span>
+                    <span class="typing-dot"></span>
+                </span>
             </div>
             
             <!-- Input Area -->
@@ -366,6 +350,83 @@
         const messageInput = document.getElementById('messageInput');
         const typingIndicator = document.getElementById('typingIndicator');
         
+        // LLM Status
+        let currentLLMProvider = 'template';
+        
+        // Check LLM status on page load
+        fetch('/api/llm_status')
+            .then(response => response.json())
+            .then(data => {
+                updateLLMStatus(data);
+            })
+            .catch(error => {
+                console.error('Error fetching LLM status:', error);
+                updateLLMStatus({ current_provider: 'template', llm_available: false });
+            });
+        
+        // Load data summary on page load
+        fetch('/api/data_summary')
+            .then(response => response.json())
+            .then(data => {
+                updateDataSummary(data);
+            })
+            .catch(error => {
+                console.error('Error fetching data summary:', error);
+                updateDataSummary({ error: 'Could not load data summary' });
+            });
+        
+        function updateLLMStatus(data) {
+            const statusElement = document.getElementById('llmProvider');
+            const statusContainer = document.getElementById('llmStatus');
+            
+            currentLLMProvider = data.current_provider;
+            
+            if (data.llm_available && data.current_provider !== 'template') {
+                statusElement.textContent = `${data.current_provider.toUpperCase()} AI`;
+                statusElement.className = 'llm-available';
+                statusContainer.innerHTML = `<i class="fas fa-robot"></i> <span class="llm-provider">${data.current_provider.toUpperCase()} AI</span>`;
+            } else {
+                statusElement.textContent = 'Template AI';
+                statusElement.className = 'llm-unavailable';
+                statusContainer.innerHTML = `<i class="fas fa-robot"></i> <span class="llm-provider">Template AI</span>`;
+            }
+        }
+        
+        function updateDataSummary(data) {
+            const summaryElement = document.getElementById('dataSummary');
+            
+            if (data.error) {
+                summaryElement.innerHTML = `
+                    <h6><i class="fas fa-exclamation-triangle me-2"></i>Data Summary</h6>
+                    <p>${data.error}</p>
+                `;
+                return;
+            }
+            
+            let summaryHTML = `<h6><i class="fas fa-database me-2"></i>Your Health Data Overview</h6>`;
+            
+            if (data.tables && data.tables.length > 0) {
+                const totalRecords = data.tables.reduce((sum, table) => sum + table.record_count, 0);
+                summaryHTML += `<p><i class="fas fa-calendar me-2"></i>${data.tables.length} health metrics tracked</p>`;
+                summaryHTML += `<p><i class="fas fa-chart-bar me-2"></i>${totalRecords.toLocaleString()} total records</p>`;
+                
+                // Show key metrics
+                const keyMetrics = data.tables.filter(table => 
+                    table.name.includes('Step') || 
+                    table.name.includes('Sleep') || 
+                    table.name.includes('Calorie')
+                );
+                
+                if (keyMetrics.length > 0) {
+                    summaryHTML += `<p><i class="fas fa-star me-2"></i>Key metrics: ${keyMetrics.map(t => t.name.replace('Daily', '')).join(', ')}</p>`;
+                }
+            } else {
+                summaryHTML += `<p><i class="fas fa-info-circle me-2"></i>No data available</p>`;
+            }
+            
+            summaryElement.innerHTML = summaryHTML;
+        }
+        
         // Socket event handlers
         socket.on('connect', function() {
             console.log('Connected to server');
@@ -377,12 +438,18 @@
             if (data.error) {
                 addMessage('ai', `❌ Error: ${data.error}`);
             } else if (data.type === 'plot') {
-                addMessage('ai', data.response);
+                // Add provider indicator for plot responses
+                const providerText = data.provider && data.provider !== 'template' ? 
+                    ` <small><i class="fas fa-microchip"></i> ${data.provider.toUpperCase()}</small>` : '';
+                addMessage('ai', data.response + providerText);
                 if (data.plot_data && data.plot_data.plot) {
                     addPlot(data.plot_data.plot, data.plot_data.title);
                 }
             } else {
-                addMessage('ai', data.response);
+                // Add provider indicator for text responses
+                const providerText = data.provider && data.provider !== 'template' ? 
+                    ` <small><i class="fas fa-microchip"></i> ${data.provider.toUpperCase()}</small>` : '';
+                addMessage('ai', data.response + providerText);
             }
         });
         
